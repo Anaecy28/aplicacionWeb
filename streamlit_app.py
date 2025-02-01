@@ -5,7 +5,14 @@ from google.cloud import firestore
 from google.oauth2 import service_account
 import json 
 
-key_dict = json.loads(os.getenv('FIREBASE_CREDENTIALS'))
+# Verificar si la variable está configurada
+firebase_credentials = os.getenv('FIREBASE_CREDENTIALS')
+if firebase_credentials is None:
+    st.error("La variable de entorno FIREBASE_CREDENTIALS no está definida.")
+    raise ValueError("La variable de entorno FIREBASE_CREDENTIALS no está definida.")
+# Intentar cargarla como JSON
+key_dict = json.loads(firebase_credentials)
+#key_dict = json.loads(os.getenv('FIREBASE_CREDENTIALS'))
 creds = service_account.Credentials.from_service_account_info(key_dict)
 db = firestore.Client(credentials=creds, project=key_dict["project_id"])
 
