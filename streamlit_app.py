@@ -1,14 +1,12 @@
 import streamlit as st 
 import pandas as pd 
+import os
 from google.cloud import firestore 
 from google.oauth2 import service_account
 import json 
 
-#secrets = toml.load("secrets.toml")
-# Extraer el JSON del 'textkey' que está guardado como cadena
-key_dict = json.loads(st.secrets["textkey"])
+key_dict = json.loads(os.getenv('FIREBASE_CREDENTIALS'))
 creds = service_account.Credentials.from_service_account_info(key_dict)
-# Crear un cliente de Firestore
 db = firestore.Client(credentials=creds, project=key_dict["project_id"])
 
 #key_dict = json.loads(st.secrets["textkey"])
